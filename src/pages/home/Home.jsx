@@ -1,11 +1,11 @@
-import React, { useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
-import imgpc from "./img/pc -Landing -page.jpg"; 
+import imgpc from "./img/pc -Landing -page.jpg";
 import imgmobile from "./img/mobil-landin-page.jpg";
 import ScrollTrigger from 'gsap/ScrollTrigger'
 import { ShoppingCart } from 'lucide-react'
 import CircularText from "../../components/CircularText";
-import imgModern from "./img/Modern-Fashion.png";
+import GirlsShirtsSlider from "../../components/GirlsShirtsSlider";
 
 
 gsap.registerPlugin(ScrollTrigger)
@@ -62,7 +62,7 @@ export default function Home() {
       { y: 0, opacity: 1, delay: 0.6, duration: 0.8, ease: 'back.out(1.7)' }
     )
 
-    cardsRef.current.forEach((card, i) => {
+    cardsRef.current.forEach((card) => {
       gsap.fromTo(
         card,
         { y: 50, opacity: 0 },
@@ -79,13 +79,30 @@ export default function Home() {
         }
       )
     })
+
+    // Animate Girls' Shirts section
+    gsap.fromTo(
+      '.girls-shirts-section',
+      { y: 50, opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 1,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: '.girls-shirts-section',
+          start: 'top 85%',
+          toggleActions: 'play none none reverse',
+        },
+      }
+    )
   }, [])
 
   return (
     <div className="w-full bg-black text-white font-sans">
-      
- 
-      
+
+
+
       {/* Hero Section */}
       <div className="relative w-full h-screen overflow-hidden z-52">
         {/* Desktop Image */}
@@ -105,11 +122,11 @@ export default function Home() {
 
 
 
-      
+
         {/* Hero Content */}
         <div className="relative z-20 h-full flex items-center px-6 md:px-20">
 
-          
+
 
           <div className="max-w-2xl">
             <h1
@@ -118,7 +135,7 @@ export default function Home() {
             >
               The Future of Fashion Starts Here
             </h1>
-            
+
             <p
               ref={desc}
               className="mt-4 sm:mt-6 text-base sm:text-lg md:text-xl text-gray-200 max-w-md"
@@ -136,7 +153,7 @@ export default function Home() {
                 Browse Collection
               </span>
             </button>
-               
+
           </div>
         </div>
 
@@ -145,7 +162,7 @@ export default function Home() {
           <CircularText text="SHOP NOW • PREMIUM QUALITY • " />
         </div>
       </div>
-      
+
 
       {/* New Drops Section */}
       <section className="bg-white text-black py-16 px-6 md:px-20">
@@ -218,8 +235,8 @@ export default function Home() {
       <div className="bg-black text-white rounded-2xl p-6 flex flex-col justify-between">
         <div>
           <h3 className="text-xl font-bold mb-2 uppercase">ELEVATE YOUR STREET GAME
-    
-  
+
+
 </h3>
           <ul className="list-disc list-inside text-sm text-gray-300 space-y-1 mb-4">
             <li>Modern & Minimalist Aesthetic</li>
@@ -267,22 +284,28 @@ export default function Home() {
 
 
 
-{/* Image Section with Gap */}
-<section className="bg-white py-16 px-6 md:px-20">
-  <div className="max-w-7xl mx-auto rounded-2xl overflow-hidden">
-    <img
-      src={imgModern}
-      alt="Collection Highlight"
-      className="w-full object-cover rounded-3xl"
-    />
+{/* Girls' Shirts Collection Section */}
+<section className="girls-shirts-section bg-gray-50 py-20 px-6 md:px-20">
+  <div className="max-w-7xl mx-auto">
+    <div className="text-center mb-12">
+      <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">
+        Girls' T-Shirts & Shirts Collection
+      </h2>
+      <p className="text-gray-600 max-w-2xl mx-auto">
+        Discover our adorable collection of girls' t-shirts and shirts. From playful graphics to elegant designs, find the perfect style for every young fashionista.
+      </p>
+    </div>
+
+    <GirlsShirtsSlider />
   </div>
 </section>
 
-      
+
+
     </div>
 
 
 
-    
+
   )
 }
