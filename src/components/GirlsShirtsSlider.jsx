@@ -17,64 +17,64 @@ export default function GirlsShirtsSlider() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [hoveredCard, setHoveredCard] = useState(null);
 
-  // Girls' products data
+  // Women's products data
   useEffect(() => {
-    const girlsProducts = [
+    const womensProducts = [
       {
-        id: 101,
-        title: "Girls' Floral Print T-Shirt",
-        description: "Soft cotton t-shirt with beautiful floral print design, perfect for casual wear",
-        price: 25,
-        discountPercentage: 15,
+        id: 1001,
+        title: "Women's Classic White Shirt",
+        description: "Timeless white shirt perfect for professional and casual wear",
+        price: 45,
+        discountPercentage: 10,
         rating: 4.5,
         stock: 25,
-        brand: "KidsStyle",
-        category: "girls-tshirts",
-        thumbnail: "https://images.unsplash.com/photo-1581044777550-4cfa60707c03?w=400&h=400&fit=crop",
-        images: ["https://images.unsplash.com/photo-1581044777550-4cfa60707c03?w=400&h=400&fit=crop"],
-        isNew: true,
-        isTrending: false
-      },
-      {
-        id: 102,
-        title: "Girls' Striped Button-Up Shirt",
-        description: "Classic striped shirt with button-up design, ideal for school or casual outings",
-        price: 32,
-        discountPercentage: 10,
-        rating: 4.3,
-        stock: 18,
-        brand: "YoungFashion",
-        category: "girls-shirts",
+        brand: "StyleCo",
+        category: "womens-shirts",
         thumbnail: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=400&h=400&fit=crop",
         images: ["https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=400&h=400&fit=crop"],
-        isNew: true,
+        isNew: false,
         isTrending: true
       },
       {
-        id: 103,
-        title: "Girls' Rainbow Graphic T-Shirt",
-        description: "Fun rainbow graphic tee made from premium cotton, perfect for playful days",
-        price: 22,
+        id: 1002,
+        title: "Women's Casual Cotton T-Shirt",
+        description: "Comfortable cotton t-shirt available in multiple colors",
+        price: 25,
+        discountPercentage: 15,
+        rating: 4.3,
+        stock: 50,
+        brand: "ComfortWear",
+        category: "womens-tshirts",
+        thumbnail: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=400&fit=crop",
+        images: ["https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=400&fit=crop"],
+        isNew: false,
+        isTrending: false
+      },
+      {
+        id: 1003,
+        title: "Women's Cozy Hoodie",
+        description: "Soft and warm hoodie perfect for chilly days",
+        price: 55,
         discountPercentage: 20,
         rating: 4.7,
         stock: 30,
-        brand: "ColorKids",
-        category: "girls-tshirts",
-        thumbnail: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=400&h=400&fit=crop",
-        images: ["https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=400&h=400&fit=crop"],
+        brand: "CozyStyle",
+        category: "womens-hoodies",
+        thumbnail: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400&h=400&fit=crop",
+        images: ["https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400&h=400&fit=crop"],
         isNew: true,
         isTrending: false
       },
       {
-        id: 104,
-        title: "Girls' Denim Shirt Jacket",
-        description: "Stylish denim shirt that can be worn as a jacket, versatile and trendy",
-        price: 45,
-        discountPercentage: 25,
+        id: 1004,
+        title: "Women's Striped Long Sleeve Shirt",
+        description: "Elegant striped shirt perfect for office and casual wear",
+        price: 38,
+        discountPercentage: 12,
         rating: 4.4,
-        stock: 15,
-        brand: "DenimKids",
-        category: "girls-shirts",
+        stock: 35,
+        brand: "OfficeChic",
+        category: "womens-shirts",
         thumbnail: "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400&h=400&fit=crop",
         images: ["https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400&h=400&fit=crop"],
         isNew: false,
@@ -172,7 +172,7 @@ export default function GirlsShirtsSlider() {
       }
     ];
 
-    setProducts(girlsProducts);
+    setProducts(womensProducts.slice(0, 4)); // Only show first 4 products
     setLoading(false);
   }, []);
 

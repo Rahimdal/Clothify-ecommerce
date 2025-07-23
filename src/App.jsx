@@ -5,6 +5,7 @@ import Shop from './pages/shop/Shop'
 import About from './pages/about/About'
 import Contact from './pages/contact/Contact'
 import Product from './pages/product/Product'
+import Checkout from './pages/checkout/Checkout'
 import Footer from './components/Footer'
 import Cart from "./components/Cart";
 import User from "./components/User";
@@ -22,6 +23,7 @@ export default function App() {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/checkout" element={<Checkout />} />
           <Route path="/User" element={<User />} />
         </Routes>
       </div>

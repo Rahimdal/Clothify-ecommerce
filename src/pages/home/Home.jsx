@@ -289,10 +289,10 @@ export default function Home() {
   <div className="max-w-7xl mx-auto">
     <div className="text-center mb-12">
       <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">
-        Girls' T-Shirts & Shirts Collection
+        Women's Fashion Collection
       </h2>
       <p className="text-gray-600 max-w-2xl mx-auto">
-        Discover our adorable collection of girls' t-shirts and shirts. From playful graphics to elegant designs, find the perfect style for every young fashionista.
+        Discover our curated collection of women's shirts, t-shirts, and hoodies. From professional essentials to casual comfort wear, find the perfect style for every occasion.
       </p>
     </div>
 

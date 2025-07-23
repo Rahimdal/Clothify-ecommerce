@@ -18,62 +18,151 @@ export default function Shop() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        // Fetch from multiple categories to get more variety
-        const [topsResponse, shirtsResponse, womensResponse] = await Promise.all([
-          fetch("https://dummyjson.com/products/category/tops?limit=15"),
-          fetch("https://dummyjson.com/products/category/womens-shirts?limit=10"),
-          fetch("https://dummyjson.com/products/category/womens-dresses?limit=10")
+        // Fetch from multiple sources to get better variety
+        const [topsResponse, womensResponse, shirtsResponse] = await Promise.all([
+          fetch("https://dummyjson.com/products/category/tops?limit=10"),
+          fetch("https://dummyjson.com/products/category/womens-dresses?limit=10"),
+          fetch("https://dummyjson.com/products/search?q=shirt&limit=10")
         ]);
 
-        const [topsData, shirtsData, womensData] = await Promise.all([
+        const [topsData, womensData, shirtsData] = await Promise.all([
           topsResponse.json(),
-          shirtsResponse.json(),
-          womensResponse.json()
+          womensResponse.json(),
+          shirtsResponse.json()
         ]);
 
-        // Combine all products and filter for clothing items
+        // Combine all products
         const allProducts = [
           ...topsData.products,
-          ...shirtsData.products,
-          ...womensData.products
+          ...womensData.products,
+          ...shirtsData.products
         ];
 
-        // Filter and enhance products for girls' clothing
-        const filteredProducts = allProducts
-          .filter(product =>
-            product.title.toLowerCase().includes('shirt') ||
-            product.title.toLowerCase().includes('top') ||
-            product.title.toLowerCase().includes('blouse') ||
-            product.title.toLowerCase().includes('tee') ||
-            product.title.toLowerCase().includes('dress') ||
-            product.category.toLowerCase().includes('women')
-          )
+        // Create fallback products to ensure we always have items
+        const fallbackProducts = [
+          {
+            id: 1001,
+            title: "Women's Classic White Shirt",
+            description: "A timeless white shirt perfect for any occasion. Made with premium cotton for comfort and style.",
+            price: 45,
+            discountPercentage: 10,
+            rating: 4.5,
+            stock: 25,
+            brand: "StyleCo",
+            category: "womens-shirts",
+            thumbnail: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=400&h=400&fit=crop",
+            images: ["https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=400&h=400&fit=crop"]
+          },
+          {
+            id: 1002,
+            title: "Women's Casual T-Shirt",
+            description: "Comfortable cotton t-shirt in various colors. Perfect for everyday wear and casual outings.",
+            price: 25,
+            discountPercentage: 15,
+            rating: 4.3,
+            stock: 50,
+            brand: "ComfortWear",
+            category: "womens-tshirts",
+            thumbnail: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=400&fit=crop",
+            images: ["https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=400&fit=crop"]
+          },
+          {
+            id: 1003,
+            title: "Women's Cozy Hoodie",
+            description: "Soft and warm hoodie perfect for chilly days. Features a comfortable fit and stylish design.",
+            price: 55,
+            discountPercentage: 20,
+            rating: 4.7,
+            stock: 30,
+            brand: "CozyStyle",
+            category: "womens-hoodies",
+            thumbnail: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400&h=400&fit=crop",
+            images: ["https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400&h=400&fit=crop"]
+          }
+        ];
+
+        // Filter and process API products
+        const seenIds = new Set();
+        const apiProducts = allProducts
+          .filter(product => {
+            // Remove duplicates
+            if (seenIds.has(product.id)) return false;
+            seenIds.add(product.id);
+
+            const title = product.title.toLowerCase();
+            const category = product.category.toLowerCase();
+
+            // Include women's items or general clothing that can work for women
+            return (
+              title.includes('women') ||
+              title.includes('girl') ||
+              category.includes('women') ||
+              category.includes('tops') ||
+              (title.includes('shirt') && !title.includes('men')) ||
+              (title.includes('dress') && category.includes('women'))
+            );
+          })
           .map(product => ({
             ...product,
-            // Enhance descriptions for better display
             description: product.description.length > 80
               ? product.description.substring(0, 80) + "..."
               : product.description,
-            // Convert price to INR (approximate)
             originalPrice: product.price,
-            price: product.price * 85, // Convert to INR
-            // Add some variety to categories
+            price: product.price * 85,
             category: getProductCategory(product.title, product.category)
-          }))
-          .slice(0, 30); // Limit to 30 products for better performance
+          }));
 
-        setProducts(filteredProducts);
-        setFilteredProducts(filteredProducts);
+        // Combine API products with fallback products and limit to 20
+        const combinedProducts = [...apiProducts, ...fallbackProducts].slice(0, 20);
+
+        setProducts(combinedProducts);
+        setFilteredProducts(combinedProducts);
       } catch (err) {
         console.error("API error:", err);
-        // Fallback to original API if there's an error
-        fetch("https://dummyjson.com/products/category/tops?limit=20")
-          .then((res) => res.json())
-          .then((data) => {
-            setProducts(data.products);
-            setFilteredProducts(data.products);
-          })
-          .catch((fallbackErr) => console.error("Fallback API error:", fallbackErr));
+        // Use only fallback products if API fails
+        const fallbackProducts = [
+          {
+            id: 1001,
+            title: "Women's Classic White Shirt",
+            description: "A timeless white shirt perfect for any occasion. Made with premium cotton for comfort and style.",
+            price: 45 * 85,
+            discountPercentage: 10,
+            rating: 4.5,
+            stock: 25,
+            brand: "StyleCo",
+            category: "Shirts",
+            thumbnail: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=400&h=400&fit=crop",
+            images: ["https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=400&h=400&fit=crop"]
+          },
+          {
+            id: 1002,
+            title: "Women's Casual T-Shirt",
+            description: "Comfortable cotton t-shirt in various colors. Perfect for everyday wear and casual outings.",
+            price: 25 * 85,
+            discountPercentage: 15,
+            rating: 4.3,
+            stock: 50,
+            brand: "ComfortWear",
+            category: "T-Shirts",
+            thumbnail: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=400&fit=crop",
+            images: ["https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=400&fit=crop"]
+          },
+          {
+            id: 1003,
+            title: "Women's Cozy Hoodie",
+            description: "Soft and warm hoodie perfect for chilly days. Features a comfortable fit and stylish design.",
+            price: 55 * 85,
+            discountPercentage: 20,
+            rating: 4.7,
+            stock: 30,
+            brand: "CozyStyle",
+            category: "Hoodies",
+            thumbnail: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400&h=400&fit=crop",
+            images: ["https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400&h=400&fit=crop"]
+          }
+        ];
+        setProducts(fallbackProducts);
+        setFilteredProducts(fallbackProducts);
       }
     };
 
@@ -110,10 +199,10 @@ export default function Shop() {
   // Helper function to categorize products
   const getProductCategory = (title, originalCategory) => {
     const titleLower = title.toLowerCase();
+    if (titleLower.includes('hoodie') || titleLower.includes('sweatshirt')) return 'Hoodies';
+    if (titleLower.includes('t-shirt') || titleLower.includes('tshirt') || titleLower.includes('tee')) return 'T-Shirts';
     if (titleLower.includes('shirt') || titleLower.includes('blouse')) return 'Shirts';
-    if (titleLower.includes('top') || titleLower.includes('tee')) return 'Tops';
-    if (titleLower.includes('dress')) return 'Dresses';
-    if (titleLower.includes('tank')) return 'Tank Tops';
+    if (titleLower.includes('top')) return 'Tops';
     return 'Fashion';
   };
 
@@ -153,7 +242,7 @@ export default function Shop() {
 
   const handleProceedToCheckout = () => {
     setShowCart(false);
-    navigate("/cart");
+    navigate("/checkout");
   };
 
   const getTotalItems = () => {
@@ -165,15 +254,15 @@ export default function Shop() {
   };
 
   return (
-    <section className="min-h-screen bg-white dark:bg-gray-900 py-12 px-6 sm:px-10 relative">
+    <section className="min-h-screen bg-white dark:bg-gray-900 py-12 px-6 sm:px-10 relative mt-8">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
           <div>
             <h2 className="text-4xl font-bold text-gray-800 dark:text-white mb-2">
-              Girls' Fashion Collection
+              Women's Shirts & T-Shirts Collection
             </h2>
             <p className="text-gray-600 dark:text-gray-400">
-              Discover {filteredProducts.length} trendy shirts, tops & more
+              Discover {filteredProducts.length} stylish women's shirts, t-shirts & hoodies
             </p>
           </div>
           <motion.button
@@ -202,7 +291,7 @@ export default function Shop() {
             <FaSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
             <input
               type="text"
-              placeholder="Search for shirts, tops, dresses..."
+              placeholder="Search for women's shirts, t-shirts, hoodies..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full pl-12 pr-4 py-3 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-400 dark:focus:ring-gray-500 focus:border-transparent text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-all duration-200"
@@ -249,7 +338,15 @@ export default function Shop() {
                   alt={product.title}
                   className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
                   onError={(e) => {
-                    e.target.src = 'https://via.placeholder.com/300x300/f3f4f6/9ca3af?text=Fashion+Item';
+                    // Use a better fallback image based on category
+                    const category = product.category.toLowerCase();
+                    if (category.includes('hoodie')) {
+                      e.target.src = 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400&h=400&fit=crop';
+                    } else if (category.includes('t-shirt') || category.includes('tee')) {
+                      e.target.src = 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=400&fit=crop';
+                    } else {
+                      e.target.src = 'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=400&h=400&fit=crop';
+                    }
                   }}
                 />
 
@@ -419,6 +516,9 @@ export default function Shop() {
                             src={item.thumbnail}
                             alt={item.title}
                             className="w-full h-full object-cover"
+                            onError={(e) => {
+                              e.target.src = 'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=400&h=400&fit=crop';
+                            }}
                           />
                         </div>
 

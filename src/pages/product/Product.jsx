@@ -184,6 +184,67 @@ export default function Product() {
           }
         }
 
+        // Check if it's one of our custom women's products (ID 1001-1003)
+        if (productId >= 1001 && productId <= 1003) {
+          const customProducts = [
+            {
+              id: 1001,
+              title: "Women's Classic White Shirt",
+              description: "A timeless white shirt perfect for any occasion. Made with premium cotton for comfort and style. This versatile piece can be dressed up for professional settings or dressed down for casual outings. Features a classic collar, button-front closure, and a tailored fit that flatters all body types.",
+              price: 45 * 85,
+              discountPercentage: 10,
+              rating: 4.5,
+              stock: 25,
+              brand: "StyleCo",
+              category: "Shirts",
+              thumbnail: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=400&h=400&fit=crop",
+              images: [
+                "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=400&h=400&fit=crop",
+                "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=500&h=500&fit=crop"
+              ]
+            },
+            {
+              id: 1002,
+              title: "Women's Casual T-Shirt",
+              description: "Comfortable cotton t-shirt in various colors. Perfect for everyday wear and casual outings. Made from 100% organic cotton for ultimate comfort and breathability. Features a relaxed fit and classic crew neckline. Available in multiple colors to match your personal style.",
+              price: 25 * 85,
+              discountPercentage: 15,
+              rating: 4.3,
+              stock: 50,
+              brand: "ComfortWear",
+              category: "T-Shirts",
+              thumbnail: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=400&fit=crop",
+              images: [
+                "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=400&fit=crop",
+                "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500&h=500&fit=crop"
+              ]
+            },
+            {
+              id: 1003,
+              title: "Women's Cozy Hoodie",
+              description: "Soft and warm hoodie perfect for chilly days. Features a comfortable fit and stylish design. Made with a cotton-polyester blend for warmth and durability. Includes a spacious front pocket and adjustable drawstring hood. Perfect for layering or wearing on its own.",
+              price: 55 * 85,
+              discountPercentage: 20,
+              rating: 4.7,
+              stock: 30,
+              brand: "CozyStyle",
+              category: "Hoodies",
+              thumbnail: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400&h=400&fit=crop",
+              images: [
+                "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400&h=400&fit=crop",
+                "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=500&h=500&fit=crop"
+              ]
+            }
+          ];
+
+          const customProduct = customProducts.find(p => p.id === productId);
+          if (customProduct) {
+            setProduct(customProduct);
+            setLoading(false);
+            return;
+          }
+        }
+
         // Otherwise, fetch from API
         const response = await fetch(`https://dummyjson.com/products/${id}`);
         const data = await response.json();
