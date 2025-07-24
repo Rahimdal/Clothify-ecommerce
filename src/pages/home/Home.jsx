@@ -285,7 +285,7 @@ export default function Home() {
 
 
 {/* Girls' Shirts Collection Section */}
-<section className="girls-shirts-section bg-gray-50 py-20 px-6 md:px-20">
+<section className="girls-shirts-section bg-white py-20 px-6 md:px-20">
   <div className="max-w-7xl mx-auto">
     <div className="text-center mb-12">
       <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">
@@ -299,13 +299,7 @@ export default function Home() {
     <GirlsShirtsSlider />
   </div>
 </section>
-
-
-
     </div>
-
-
-
 
   )
 }

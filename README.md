@@ -24,7 +24,7 @@ A stylish and responsive clothing eCommerce site built using **React**, **Vite**
 
 ## 📁 Folder Structure
 src/
-├── assets/ # Static images and assets
+├── assets/ # Static images and assets                                                                  
 ├── components/ # Reusable components like Navbar, Cart, Footer
 │ ├── Cart.jsx
 │ ├── CircularText.jsx
